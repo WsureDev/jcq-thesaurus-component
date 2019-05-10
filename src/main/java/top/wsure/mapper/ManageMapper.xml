@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wsure.dao.ManageMapper" >
+  <resultMap id="BaseResultMap" type="top.wsure.entity.Manage" >
+    <id column="manage_id" property="manageId" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    manage_id, email
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manage
+    where manage_id = #{manageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manage
+    where manage_id = #{manageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="top.wsure.entity.Manage" >
+    insert into manage (manage_id, email)
+    values (#{manageId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="top.wsure.entity.Manage" >
+    insert into manage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="manageId != null" >
+        manage_id,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="manageId != null" >
+        #{manageId,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wsure.entity.Manage" >
+    update manage
+    <set >
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where manage_id = #{manageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wsure.entity.Manage" >
+    update manage
+    set email = #{email,jdbcType=VARCHAR}
+    where manage_id = #{manageId,jdbcType=INTEGER}
+  </update>
+</mapper>

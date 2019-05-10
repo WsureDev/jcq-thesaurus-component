@@ -1,0 +1,20 @@
+spring:
+  datasource:
+      url: jdbc:sqlite:app/com.sobte.cqp.jcq/app/${thesaurus.AppId}/sys_info
+      driver-class-name: org.sqlite.JDBC
+  devtools:
+    restart:
+      enabled: true
+server:
+  port: 8898
+  error:
+    whitelabel:
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath:top/wsure/mapper/**/*.xml
+  type-aliases-package: top.wsure.entity
+  configuration:
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+debug: false

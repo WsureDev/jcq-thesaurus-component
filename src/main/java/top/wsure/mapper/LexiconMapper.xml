@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wsure.dao.LexiconMapper" >
+  <resultMap id="BaseResultMap" type="top.wsure.entity.Lexicon" >
+    <id column="word_id" property="wordId" jdbcType="INTEGER" />
+    <result column="question" property="question" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="commit_time" property="commitTime" jdbcType="INTEGER" />
+    <result column="commit_user" property="commitUser" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    word_id, question, answer, type, commit_time, commit_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from global
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from global
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="top.wsure.entity.Lexicon" >
+    insert into global (word_id, question, answer, 
+      type, commit_time, commit_user
+      )
+    values (#{wordId,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{commitTime,jdbcType=INTEGER}, #{commitUser,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="top.wsure.entity.Lexicon" >
+    insert into global
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wordId != null" >
+        word_id,
+      </if>
+      <if test="question != null" >
+        question,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="commitTime != null" >
+        commit_time,
+      </if>
+      <if test="commitUser != null" >
+        commit_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wordId != null" >
+        #{wordId,jdbcType=INTEGER},
+      </if>
+      <if test="question != null" >
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="commitTime != null" >
+        #{commitTime,jdbcType=INTEGER},
+      </if>
+      <if test="commitUser != null" >
+        #{commitUser,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wsure.entity.Lexicon" >
+    update global
+    <set >
+      <if test="question != null" >
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="commitTime != null" >
+        commit_time = #{commitTime,jdbcType=INTEGER},
+      </if>
+      <if test="commitUser != null" >
+        commit_user = #{commitUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wsure.entity.Lexicon" >
+    update global
+    set question = #{question,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      commit_time = #{commitTime,jdbcType=INTEGER},
+      commit_user = #{commitUser,jdbcType=INTEGER}
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </update>
+</mapper>
