@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import top.wsure.component.Configs;
 import top.wsure.component.DatebaseUtils;
 import top.wsure.service.SettingService;
+import top.wsure.service.TableService;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -83,8 +84,8 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
     }
 
     public int privateMsg(int i, int i1, long l, String s, int i2) {
-        SettingService settingService = DatebaseUtils.datebaseUtils.getSettingService();
-        settingService.querySetting();
+        TableService tableService = DatebaseUtils.datebaseUtils.getTableService();
+        CQ.logInfo("has groups ?",""+tableService.hasTable("groups"));
         return 0;
     }
 
