@@ -7,6 +7,8 @@
     <result column="master_email" property="masterEmail" jdbcType="VARCHAR" />
     <result column="robot_email" property="robotEmail" jdbcType="VARCHAR" />
     <result column="robot_password" property="robotPassword" jdbcType="VARCHAR" />
+    <result column="enable_key" property="enableKey" jdbcType="VARCHAR" />
+    <result column="disable_key" property="disableKey" jdbcType="VARCHAR" />
     <result column="exact_key" property="exactKey" jdbcType="VARCHAR" />
     <result column="vague_key" property="vagueKey" jdbcType="VARCHAR" />
     <result column="regex_key" property="regexKey" jdbcType="VARCHAR" />
@@ -18,19 +20,19 @@
 
   <sql id="Base_Column_List">
     config, master_id, master_email,
-      robot_email, robot_password, exact_key,
-      vague_key, regex_key, answer_key,
+      robot_email, robot_password, enable_key, disable_key,
+      exact_key, vague_key, regex_key, answer_key,
       delete_key, query_key, global_key
   </sql>
 
   <insert id="insert" parameterType="top.wsure.entity.Setting" >
     insert into setting (config, master_id, master_email, 
-      robot_email, robot_password, exact_key, 
+      robot_email, robot_password, enable_key, disable_key,  exact_key,
       vague_key, regex_key, answer_key, 
       delete_key, query_key, global_key
       )
     values (#{config,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, #{masterEmail,jdbcType=VARCHAR}, 
-      #{robotEmail,jdbcType=VARCHAR}, #{robotPassword,jdbcType=VARCHAR}, #{exactKey,jdbcType=VARCHAR}, 
+      #{robotEmail,jdbcType=VARCHAR}, #{robotPassword,jdbcType=VARCHAR},#{enableKey,jdbcType=VARCHAR},  #{disableKey,jdbcType=VARCHAR}, #{exactKey,jdbcType=VARCHAR},
       #{vagueKey,jdbcType=VARCHAR}, #{regexKey,jdbcType=VARCHAR}, #{answerKey,jdbcType=VARCHAR}, 
       #{deleteKey,jdbcType=VARCHAR}, #{queryKey,jdbcType=VARCHAR}, #{globalKey,jdbcType=VARCHAR}
       )
@@ -52,6 +54,12 @@
       </if>
       <if test="robotPassword != null" >
         robot_password,
+      </if>
+      <if test="enableKey != null" >
+        enable_key,
+      </if>
+      <if test="disableKey != null" >
+        disable_key,
       </if>
       <if test="exactKey != null" >
         exact_key,
@@ -90,6 +98,12 @@
       </if>
       <if test="robotPassword != null" >
         #{robotPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="enableKey != null" >
+        #{enableKey,jdbcType=VARCHAR},
+      </if>
+      <if test="disableKey != null" >
+        #{disableKey,jdbcType=VARCHAR},
       </if>
       <if test="exactKey != null" >
         #{exactKey,jdbcType=VARCHAR},

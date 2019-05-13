@@ -62,19 +62,10 @@ PRIMARY KEY ("manage_id" ASC)
 -- Table structure for setting
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS "setting" (
-"config"  INTEGER NOT NULL DEFAULT 0,
-"master_id"  INTEGER NOT NULL,
-"master_email"  TEXT,
-"robot_email"  TEXT,
-"robot_password"  TEXT,
-"exact_key"  TEXT,
-"vague_key"  TEXT,
-"regex_key"  TEXT,
-"answer_key"  TEXT,
-"delete_key"  TEXT,
-"query_key"  TEXT,
-"global_key"  TEXT,
-PRIMARY KEY ("config"),
-CONSTRAINT "only" UNIQUE ("master_id")
-);
+"key"  TEXT NOT NULL,
+"value"  TEXT NOT NULL,
+PRIMARY KEY ("key"),
+CONSTRAINT "keyOnly" UNIQUE ("key") ON CONFLICT REPLACE
+)
+;
 
