@@ -30,13 +30,15 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         // 要测试主类就先实例化一个主类对象
         Thesaurus thesaurus = new Thesaurus();
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
+
+        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage1", 0);
         thesaurus.startup();// 程序运行开始 调用应用初始化方法
         thesaurus.enable();// 程序初始化完成后，启用应用，让应用正常工作
         // 开始模拟发送消息
         // 模拟私聊消息
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
-        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage", 0);
+        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage2", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
         thesaurus.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
@@ -83,10 +85,32 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         return 0;
     }
 
-    public int privateMsg(int i, int i1, long l, String s, int i2) {
-        TableService tableService = DatebaseUtils.datebaseUtils.getTableService();
+    /**
+     * 私聊消息 (Type=21)<br>
+     * 本方法会在酷Q【线程】中被调用。<br>
+     *
+     * @param subType 子类型，11/来自好友 1/来自在线状态 2/来自群 3/来自讨论组
+     * @param msgId   消息ID
+     * @param fromQQ  来源QQ
+     * @param msg     消息内容
+     * @param font    字体
+     * @return 返回值*不能*直接返回文本 如果要回复消息，请调用api发送<br>
+     * 这里 返回  {@link IMsg#MSG_INTERCEPT MSG_INTERCEPT} - 截断本条消息，不再继续处理<br>
+     * 注意：应用优先级设置为"最高"(10000)时，不得使用本返回值<br>
+     * 如果不回复消息，交由之后的应用/过滤器处理，这里 返回  {@link IMsg#MSG_IGNORE MSG_IGNORE} - 忽略本条消息
+     */
+    public int privateMsg(int subType, int msgId, long fromQQ, String msg, int font) {
+        // 这里处理消息
+        DatebaseUtils datebaseUtils = DatebaseUtils.datebaseUtils;
+        if(datebaseUtils == null)
+        {
+            CQ.logInfo("SpringBoot is not ready","privateMsg:"+msg);
+            return MSG_IGNORE;
+        }
+        TableService tableService = datebaseUtils.getTableService();
         CQ.logInfo("has groups ?",""+tableService.hasTable("groups"));
-        return 0;
+        CQ.sendPrivateMsg(fromQQ, "你发送了这样的消息：" + msg + "\n来自Java插件");
+        return MSG_IGNORE;
     }
 
     public int groupMsg(int i, int i1, long l, long l1, String s, String s1, int i2) {

@@ -2,6 +2,11 @@ spring:
   datasource:
       url: jdbc:sqlite:app/com.sobte.cqp.jcq/app/${thesaurus.AppId}/sys_info
       driver-class-name: org.sqlite.JDBC
+      schema:
+        - classpath:schema.sql
+      data:
+        - classpath:data.sql
+      initialization-mode: always
   devtools:
     restart:
       enabled: true

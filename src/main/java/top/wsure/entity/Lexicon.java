@@ -9,7 +9,7 @@ public class Lexicon {
 
     private Integer type;
 
-    private Integer commitTime;
+    private String commitTime;
 
     private Integer commitUser;
 
@@ -45,12 +45,12 @@ public class Lexicon {
         this.type = type;
     }
 
-    public Integer getCommitTime() {
+    public String getCommitTime() {
         return commitTime;
     }
 
-    public void setCommitTime(Integer commitTime) {
-        this.commitTime = commitTime;
+    public void setCommitTime(String commitTime) {
+        this.commitTime = commitTime == null ? null : commitTime.trim();
     }
 
     public Integer getCommitUser() {
