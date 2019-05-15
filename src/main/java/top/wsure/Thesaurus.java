@@ -5,11 +5,15 @@ import com.sobte.cqp.jcq.entity.ICQVer;
 import com.sobte.cqp.jcq.entity.IMsg;
 import com.sobte.cqp.jcq.entity.IRequest;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import top.wsure.component.Configs;
 import top.wsure.component.DatebaseUtils;
+import top.wsure.config.Option;
+import top.wsure.config.RegexString;
+import top.wsure.function.Instructions;
 import top.wsure.service.SettingService;
 import top.wsure.service.TableService;
 
@@ -39,6 +43,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
         thesaurus.privateMsg(0, 10001, 2234567819L, "mssage2", 0);
+        thesaurus.privateMsg(0, 10001, 2234567819L, "查问123", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
         thesaurus.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
@@ -109,7 +114,8 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         }
         TableService tableService = datebaseUtils.getTableService();
         CQ.logInfo("has groups ?",""+tableService.hasTable("groups"));
-        CQ.sendPrivateMsg(fromQQ, "你发送了这样的消息：" + msg + "\n来自Java插件");
+        CQ.logInfo("masterId",Option.masterId);
+        CQ.logInfo(msg,Instructions.checkInstruct(msg));
         return MSG_IGNORE;
     }
 

@@ -2,136 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.wsure.dao.SettingMapper" >
   <resultMap id="BaseResultMap" type="top.wsure.entity.Setting" >
-    <result column="config" property="config" jdbcType="INTEGER" />
-    <result column="master_id" property="masterId" jdbcType="INTEGER" />
-    <result column="master_email" property="masterEmail" jdbcType="VARCHAR" />
-    <result column="robot_email" property="robotEmail" jdbcType="VARCHAR" />
-    <result column="robot_password" property="robotPassword" jdbcType="VARCHAR" />
-    <result column="enable_key" property="enableKey" jdbcType="VARCHAR" />
-    <result column="disable_key" property="disableKey" jdbcType="VARCHAR" />
-    <result column="exact_key" property="exactKey" jdbcType="VARCHAR" />
-    <result column="vague_key" property="vagueKey" jdbcType="VARCHAR" />
-    <result column="regex_key" property="regexKey" jdbcType="VARCHAR" />
-    <result column="answer_key" property="answerKey" jdbcType="VARCHAR" />
-    <result column="delete_key" property="deleteKey" jdbcType="VARCHAR" />
-    <result column="query_key" property="queryKey" jdbcType="VARCHAR" />
-    <result column="global_key" property="globalKey" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
   </resultMap>
-
-  <sql id="Base_Column_List">
-    config, master_id, master_email,
-      robot_email, robot_password, enable_key, disable_key,
-      exact_key, vague_key, regex_key, answer_key,
-      delete_key, query_key, global_key
-  </sql>
-
   <insert id="insert" parameterType="top.wsure.entity.Setting" >
-    insert into setting (config, master_id, master_email, 
-      robot_email, robot_password, enable_key, disable_key,  exact_key,
-      vague_key, regex_key, answer_key, 
-      delete_key, query_key, global_key
-      )
-    values (#{config,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, #{masterEmail,jdbcType=VARCHAR}, 
-      #{robotEmail,jdbcType=VARCHAR}, #{robotPassword,jdbcType=VARCHAR},#{enableKey,jdbcType=VARCHAR},  #{disableKey,jdbcType=VARCHAR}, #{exactKey,jdbcType=VARCHAR},
-      #{vagueKey,jdbcType=VARCHAR}, #{regexKey,jdbcType=VARCHAR}, #{answerKey,jdbcType=VARCHAR}, 
-      #{deleteKey,jdbcType=VARCHAR}, #{queryKey,jdbcType=VARCHAR}, #{globalKey,jdbcType=VARCHAR}
-      )
+    insert into setting (key, value)
+    values (#{key,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.wsure.entity.Setting" >
     insert into setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="config != null" >
-        config,
+      <if test="key != null" >
+        key,
       </if>
-      <if test="masterId != null" >
-        master_id,
-      </if>
-      <if test="masterEmail != null" >
-        master_email,
-      </if>
-      <if test="robotEmail != null" >
-        robot_email,
-      </if>
-      <if test="robotPassword != null" >
-        robot_password,
-      </if>
-      <if test="enableKey != null" >
-        enable_key,
-      </if>
-      <if test="disableKey != null" >
-        disable_key,
-      </if>
-      <if test="exactKey != null" >
-        exact_key,
-      </if>
-      <if test="vagueKey != null" >
-        vague_key,
-      </if>
-      <if test="regexKey != null" >
-        regex_key,
-      </if>
-      <if test="answerKey != null" >
-        answer_key,
-      </if>
-      <if test="deleteKey != null" >
-        delete_key,
-      </if>
-      <if test="queryKey != null" >
-        query_key,
-      </if>
-      <if test="globalKey != null" >
-        global_key,
+      <if test="value != null" >
+        value,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="config != null" >
-        #{config,jdbcType=INTEGER},
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
       </if>
-      <if test="masterId != null" >
-        #{masterId,jdbcType=INTEGER},
-      </if>
-      <if test="masterEmail != null" >
-        #{masterEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="robotEmail != null" >
-        #{robotEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="robotPassword != null" >
-        #{robotPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="enableKey != null" >
-        #{enableKey,jdbcType=VARCHAR},
-      </if>
-      <if test="disableKey != null" >
-        #{disableKey,jdbcType=VARCHAR},
-      </if>
-      <if test="exactKey != null" >
-        #{exactKey,jdbcType=VARCHAR},
-      </if>
-      <if test="vagueKey != null" >
-        #{vagueKey,jdbcType=VARCHAR},
-      </if>
-      <if test="regexKey != null" >
-        #{regexKey,jdbcType=VARCHAR},
-      </if>
-      <if test="answerKey != null" >
-        #{answerKey,jdbcType=VARCHAR},
-      </if>
-      <if test="deleteKey != null" >
-        #{deleteKey,jdbcType=VARCHAR},
-      </if>
-      <if test="queryKey != null" >
-        #{queryKey,jdbcType=VARCHAR},
-      </if>
-      <if test="globalKey != null" >
-        #{globalKey,jdbcType=VARCHAR},
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
 
-  <select id="querySetting" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from setting where config = '0'
+  <select id="querySettings" resultMap="BaseResultMap">
+    select * from setting
   </select>
-
+  
 </mapper>
