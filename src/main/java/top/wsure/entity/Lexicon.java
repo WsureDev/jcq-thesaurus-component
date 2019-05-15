@@ -60,4 +60,16 @@ public class Lexicon {
     public void setCommitUser(Integer commitUser) {
         this.commitUser = commitUser;
     }
+
+    @Override
+    public String toString() {
+        return "Lexicon{" +
+                "wordId=" + wordId +
+                ", question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", type=" + type +
+                ", commitTime='" + commitTime + '\'' +
+                ", commitUser=" + commitUser +
+                '}';
+    }
 }

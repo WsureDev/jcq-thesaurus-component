@@ -1,8 +1,11 @@
 package top.wsure.function;
 
 import top.wsure.component.DatebaseUtils;
-import top.wsure.config.Option;
 import top.wsure.config.RegexString;
+import top.wsure.entity.Lexicon;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 
@@ -24,5 +27,36 @@ public class Instructions {
             }
         }
         return null;
+    }
+
+    public static Lexicon msgToLexicon(String instructType, String msg){
+        Lexicon lexicon = new Lexicon();
+        lexicon.setQuestion(getMatcher(RegexString.matchRegexs.get(instructType),msg));
+        lexicon.setAnswer(getMatcher(RegexString.matchRegexs.get("answer"),msg));
+        lexicon.setType(lexiconType(instructType));
+        return lexicon;
+    }
+
+    public static String getMatcher(String regex, String source) {
+        CQ.logInfo("getMatcher",regex+":"+source);
+        String result = "";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        while (matcher.find()) {
+            CQ.logInfo("find regex",matcher.group());
+            result = matcher.group(0);
+        }
+        return result;
+    }
+
+    public static int lexiconType(String instructType){
+        String [] types = new String[] { "exact","vague","regex"};
+        for (int i=0;i<types.length;i++){
+            if(instructType.matches("\\w_"+types[i]))
+            {
+                return i+1;
+            }
+        }
+        return 0;
     }
 }
