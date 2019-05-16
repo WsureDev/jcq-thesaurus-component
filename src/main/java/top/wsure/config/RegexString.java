@@ -30,7 +30,7 @@ public class RegexString {
     };
     
     public static Map<String,String> matchRegexs = new HashMap<String, String>(){
-        private String sufix = ").+(?="+Option.answerKey+".+$)";
+        private String sufix = ").+?(?="+Option.answerKey+".+$)";
 
         private String prefix = "(?<=^";
 

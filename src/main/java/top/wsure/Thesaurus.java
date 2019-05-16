@@ -43,7 +43,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
         thesaurus.privateMsg(0, 10001, 2234567819L, "mssage2", 0);
-        thesaurus.privateMsg(0, 10001, 2234567819L, "模糊问aad答xxx", 0);
+        thesaurus.privateMsg(0, 10001, 2234567819L, "模糊问问你妈答你的回答尼玛", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
         thesaurus.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
