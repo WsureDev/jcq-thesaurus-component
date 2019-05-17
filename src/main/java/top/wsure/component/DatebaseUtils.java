@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.wsure.config.Option;
 import top.wsure.config.RegexString;
+import top.wsure.dao.ManageMapper;
 import top.wsure.dao.SettingMapper;
 import top.wsure.entity.Setting;
+import top.wsure.service.ManageService;
 import top.wsure.service.SettingService;
 import top.wsure.service.TableService;
 
@@ -33,6 +35,13 @@ public class DatebaseUtils {
 
     public SettingService getSettingService() {
         return settingService;
+    }
+
+    @Autowired
+    private ManageService manageService;
+
+    public ManageService getManageService() {
+        return manageService;
     }
 
     @PostConstruct

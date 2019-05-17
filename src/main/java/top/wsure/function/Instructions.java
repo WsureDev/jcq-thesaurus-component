@@ -3,6 +3,8 @@ package top.wsure.function;
 import top.wsure.component.DatebaseUtils;
 import top.wsure.config.RegexString;
 import top.wsure.entity.Lexicon;
+import top.wsure.entity.Manage;
+import top.wsure.service.ManageService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +19,12 @@ public class Instructions {
         CQ.getGroupMemberInfo(fromGroup,fromQQ).getAuthority();
 //        datebaseUtils;
         return false;
+    }
+
+    public static boolean chechPromise(long fromQQ){
+        ManageService manageService =datebaseUtils.getManageService();
+        Manage manage = manageService.selectByPrimaryKey((int) fromQQ);
+        return manage==null?false:true;
     }
 
     public static String checkInstruct(String msg){
@@ -58,5 +66,13 @@ public class Instructions {
             }
         }
         return 0;
+    }
+
+    public static Integer msgToDeleteId(String instructType, String msg){
+        return Integer.parseInt(getMatcher(RegexString.matchRegexs.get(instructType),msg));
+    }
+
+    public static String msgToQueryWord(String instructType, String msg){
+        return getMatcher(RegexString.matchRegexs.get(instructType),msg);
     }
 }

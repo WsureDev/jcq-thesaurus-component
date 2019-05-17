@@ -9,7 +9,7 @@ spring:
     restart:
       enabled: true
 server:
-  port: 8898
+  port: 80
   error:
     whitelabel:
       enabled: true
