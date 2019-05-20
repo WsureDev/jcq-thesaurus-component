@@ -2,25 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.wsure.dao.ManageMapper" >
   <resultMap id="BaseResultMap" type="top.wsure.entity.Manage" >
-    <id column="manage_id" property="manageId" jdbcType="INTEGER" />
+    <id column="manage_id" property="manageId" jdbcType="BIGINT" />
     <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     manage_id, email
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from manage
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    where manage_id = #{manageId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from manage
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    where manage_id = #{manageId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wsure.entity.Manage" >
     insert into manage (manage_id, email)
-    values (#{manageId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR})
+    values (#{manageId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.wsure.entity.Manage" >
     insert into manage
@@ -34,7 +34,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="manageId != null" >
-        #{manageId,jdbcType=INTEGER},
+        #{manageId,jdbcType=BIGINT},
       </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
@@ -48,11 +48,11 @@
         email = #{email,jdbcType=VARCHAR},
       </if>
     </set>
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    where manage_id = #{manageId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wsure.entity.Manage" >
     update manage
     set email = #{email,jdbcType=VARCHAR}
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    where manage_id = #{manageId,jdbcType=BIGINT}
   </update>
 </mapper>

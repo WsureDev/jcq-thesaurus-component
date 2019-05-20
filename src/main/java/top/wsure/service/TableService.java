@@ -17,16 +17,16 @@ public class TableService {
         return tableMapper.hasTable(name);
     }
 
-    public boolean hasTable(long groupId){
+    public boolean hasTable(Long groupId){
         return tableMapper.hasTable(tableName(groupId));
     }
 
-    public boolean createNewGroup(long groupId){
+    public boolean createNewGroup(Long groupId){
         tableMapper.createNewGroup(tableName(groupId));
         return hasTable(groupId);
     }
 
-    public int copyLexicon(long fromGroupId,long toGroupId){
+    public int copyLexicon(Long fromGroupId,Long toGroupId){
         return tableMapper.copyLexicon(new HashMap<String, String>(){
             {
                 put("fromGroupId",tableName(fromGroupId));
@@ -35,12 +35,12 @@ public class TableService {
         });
     }
 
-    public int deleteLexicon(long groupId){
+    public int deleteLexicon(Long groupId){
         tableMapper.deleteLexicon(tableName(groupId));
-        tableMapper.resetSequence(tableName(groupId));
+        return tableMapper.resetSequence(tableName(groupId));
     }
 
-    private String tableName(long groupId){
+    private String tableName(Long groupId){
         return GROUP_PRE+groupId;
     }
 }

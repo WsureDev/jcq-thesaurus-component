@@ -1,7 +1,7 @@
 package top.wsure.entity;
 
 public class Groups {
-    private Integer groupId;
+    private Long groupId;
 
     private Integer enable;
 
@@ -9,11 +9,11 @@ public class Groups {
 
     private Integer welcomeEnable;
 
-    public Integer getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 

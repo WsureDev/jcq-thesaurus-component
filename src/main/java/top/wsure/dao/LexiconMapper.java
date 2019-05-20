@@ -1,17 +1,22 @@
 package top.wsure.dao;
 
 import top.wsure.entity.Lexicon;
+import top.wsure.entity.LexiconDto;
+
+import java.util.List;
 
 public interface LexiconMapper {
-    int deleteByPrimaryKey(Integer wordId);
+    int deleteByPrimaryKey(LexiconDto record);
 
-    int insert(Lexicon record);
+    int insert(LexiconDto record);
 
-    int insertSelective(Lexicon record);
+    int insertSelective(LexiconDto record);
 
-    Lexicon selectByPrimaryKey(Integer wordId);
+    LexiconDto selectByPrimaryKey(LexiconDto record);
 
-    int updateByPrimaryKeySelective(Lexicon record);
+    int updateByPrimaryKeySelective(LexiconDto record);
 
-    int updateByPrimaryKey(Lexicon record);
+    int updateByPrimaryKey(LexiconDto record);
+
+    List<Lexicon> selectByQuestion(LexiconDto record);
 }

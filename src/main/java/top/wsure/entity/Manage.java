@@ -1,15 +1,15 @@
 package top.wsure.entity;
 
 public class Manage {
-    private Integer manageId;
+    private Long manageId;
 
     private String email;
 
-    public Integer getManageId() {
+    public Long getManageId() {
         return manageId;
     }
 
-    public void setManageId(Integer manageId) {
+    public void setManageId(Long manageId) {
         this.manageId = manageId;
     }
 

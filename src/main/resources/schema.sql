@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS "global" (
 "answer"  TEXT NOT NULL,
 "type"  INTEGER NOT NULL DEFAULT 0,
 "commit_time"  TimeStamp NOT NULL DEFAULT (datetime('now','localtime')),
-"commit_user"  INTEGER
+"commit_user"  BIGINT
 );
 
 -- ----------------------------
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS "private" (
 "answer"  TEXT NOT NULL,
 "type"  INTEGER NOT NULL DEFAULT 0,
 "commit_time"  TimeStamp NOT NULL DEFAULT (datetime('now','localtime')),
-"commit_user"  INTEGER
+"commit_user"  BIGINT
 );
 
 -- ----------------------------
 -- Table structure for groups
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS "groups" (
-"group_id"  INTEGER NOT NULL,
+"group_id"  BIGINT NOT NULL,
 "enable"  INTEGER NOT NULL DEFAULT 0,
 "editer_level"  INTEGER NOT NULL DEFAULT 2,
 "welcome_enable"  INTEGER NOT NULL DEFAULT 0,
@@ -53,7 +53,7 @@ PRIMARY KEY ("group_id")
 -- Table structure for manage
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS "manage" (
-"manage_id"  INTEGER NOT NULL,
+"manage_id"  BIGINT NOT NULL,
 "email"  TEXT(40),
 PRIMARY KEY ("manage_id" ASC)
 );

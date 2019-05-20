@@ -23,7 +23,7 @@ public class Instructions {
 
     public static boolean chechPromise(long fromQQ){
         ManageService manageService =datebaseUtils.getManageService();
-        Manage manage = manageService.selectByPrimaryKey((int) fromQQ);
+        Manage manage = manageService.selectByPrimaryKey(fromQQ);
         return manage==null?false:true;
     }
 

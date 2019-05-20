@@ -11,7 +11,7 @@ public class Lexicon {
 
     private String commitTime;
 
-    private Integer commitUser;
+    private Long commitUser;
 
     public Integer getWordId() {
         return wordId;
@@ -53,11 +53,11 @@ public class Lexicon {
         this.commitTime = commitTime == null ? null : commitTime.trim();
     }
 
-    public Integer getCommitUser() {
+    public Long getCommitUser() {
         return commitUser;
     }
 
-    public void setCommitUser(Integer commitUser) {
+    public void setCommitUser(Long commitUser) {
         this.commitUser = commitUser;
     }
 

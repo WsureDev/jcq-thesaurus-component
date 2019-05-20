@@ -7,31 +7,31 @@
     <result column="answer" property="answer" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="commit_time" property="commitTime" jdbcType="VARCHAR" />
-    <result column="commit_user" property="commitUser" jdbcType="INTEGER" />
+    <result column="commit_user" property="commitUser" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     word_id, question, answer, type, commit_time, commit_user
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="top.wsure.entity.LexiconDto" >
     select 
     <include refid="Base_Column_List" />
-    from global
+    from #{tableName,jdbcType=VARCHAR}
     where word_id = #{wordId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from global
+  <delete id="deleteByPrimaryKey" parameterType="top.wsure.entity.LexiconDto" >
+    delete from #{tableName,jdbcType=VARCHAR}
     where word_id = #{wordId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="top.wsure.entity.Lexicon" >
-    insert into global (word_id, question, answer, 
+  <insert id="insert" parameterType="top.wsure.entity.LexiconDto" >
+    insert into #{tableName,jdbcType=VARCHAR} (word_id, question, answer,
       type, commit_time, commit_user
       )
     values (#{wordId,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{commitTime,jdbcType=VARCHAR}, #{commitUser,jdbcType=INTEGER}
+      #{type,jdbcType=INTEGER}, #{commitTime,jdbcType=VARCHAR}, #{commitUser,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="top.wsure.entity.Lexicon" >
-    insert into global
+  <insert id="insertSelective" parameterType="top.wsure.entity.LexiconDto" >
+    insert into #{tableName,jdbcType=VARCHAR}
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="wordId != null" >
         word_id,
@@ -69,12 +69,12 @@
         #{commitTime,jdbcType=VARCHAR},
       </if>
       <if test="commitUser != null" >
-        #{commitUser,jdbcType=INTEGER},
+        #{commitUser,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.wsure.entity.Lexicon" >
-    update global
+  <update id="updateByPrimaryKeySelective" parameterType="top.wsure.entity.LexiconDto" >
+    update #{tableName,jdbcType=VARCHAR}
     <set >
       <if test="question != null" >
         question = #{question,jdbcType=VARCHAR},
@@ -89,18 +89,37 @@
         commit_time = #{commitTime,jdbcType=VARCHAR},
       </if>
       <if test="commitUser != null" >
-        commit_user = #{commitUser,jdbcType=INTEGER},
+        commit_user = #{commitUser,jdbcType=BIGINT},
       </if>
     </set>
     where word_id = #{wordId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wsure.entity.Lexicon" >
-    update global
+  <update id="updateByPrimaryKey" parameterType="top.wsure.entity.LexiconDto" >
+    update #{tableName,jdbcType=VARCHAR}
     set question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       commit_time = #{commitTime,jdbcType=VARCHAR},
-      commit_user = #{commitUser,jdbcType=INTEGER}
+      commit_user = #{commitUser,jdbcType=BIGINT}
     where word_id = #{wordId,jdbcType=INTEGER}
   </update>
+  <select id="selectByQuestion" parameterType="top.wsure.entity.LexiconDto" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from #{tableName,jdbcType=VARCHAR}
+    <where>
+      <choose>
+        <when test="type == 1">
+          question = #{question,jdbcType=VARCHAR}
+        </when>
+        <when test="type == 2">
+          question like CONCAT('%',#{question,jdbcType=VARCHAR},'%')
+        </when>
+        <when test="type == 3">
+
+        </when>
+      </choose>
+      and type = #{type,jdbcType=INTEGER}
+    </where>
+  </select>
+
 </mapper>

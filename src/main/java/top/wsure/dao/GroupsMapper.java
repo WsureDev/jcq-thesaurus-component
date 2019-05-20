@@ -3,13 +3,13 @@ package top.wsure.dao;
 import top.wsure.entity.Groups;
 
 public interface GroupsMapper {
-    int deleteByPrimaryKey(Integer groupId);
+    int deleteByPrimaryKey(Long groupId);
 
     int insert(Groups record);
 
     int insertSelective(Groups record);
 
-    Groups selectByPrimaryKey(Integer groupId);
+    Groups selectByPrimaryKey(Long groupId);
 
     int updateByPrimaryKeySelective(Groups record);
 

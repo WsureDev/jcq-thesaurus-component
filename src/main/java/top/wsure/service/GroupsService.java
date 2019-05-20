@@ -9,7 +9,7 @@ public class GroupsService {
     @Autowired
     private GroupsMapper groupsMapper;
 
-    public int deleteByPrimaryKey(Integer groupId){
+    public int deleteByPrimaryKey(Long groupId){
         return groupsMapper.deleteByPrimaryKey(groupId);
     }
 
@@ -21,7 +21,7 @@ public class GroupsService {
         return groupsMapper.insertSelective(record);
     }
 
-    public Groups selectByPrimaryKey(Integer groupId){
+    public Groups selectByPrimaryKey(Long groupId){
         return groupsMapper.selectByPrimaryKey(groupId);
     }
 

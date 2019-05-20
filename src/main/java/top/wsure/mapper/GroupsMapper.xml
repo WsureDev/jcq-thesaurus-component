@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.wsure.dao.GroupsMapper" >
   <resultMap id="BaseResultMap" type="top.wsure.entity.Groups" >
-    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <id column="group_id" property="groupId" jdbcType="BIGINT" />
     <result column="enable" property="enable" jdbcType="INTEGER" />
     <result column="editer_level" property="editerLevel" jdbcType="INTEGER" />
     <result column="welcome_enable" property="welcomeEnable" jdbcType="INTEGER" />
@@ -10,20 +10,20 @@
   <sql id="Base_Column_List" >
     group_id, enable, editer_level, welcome_enable
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from groups
-    where group_id = #{groupId,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from groups
-    where group_id = #{groupId,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wsure.entity.Groups" >
     insert into groups (group_id, enable, editer_level, 
       welcome_enable)
-    values (#{groupId,jdbcType=INTEGER}, #{enable,jdbcType=INTEGER}, #{editerLevel,jdbcType=INTEGER}, 
+    values (#{groupId,jdbcType=BIGINT}, #{enable,jdbcType=INTEGER}, #{editerLevel,jdbcType=INTEGER},
       #{welcomeEnable,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="top.wsure.entity.Groups" >
@@ -44,7 +44,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
+        #{groupId,jdbcType=BIGINT},
       </if>
       <if test="enable != null" >
         #{enable,jdbcType=INTEGER},
@@ -70,13 +70,13 @@
         welcome_enable = #{welcomeEnable,jdbcType=INTEGER},
       </if>
     </set>
-    where group_id = #{groupId,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wsure.entity.Groups" >
     update groups
     set enable = #{enable,jdbcType=INTEGER},
       editer_level = #{editerLevel,jdbcType=INTEGER},
       welcome_enable = #{welcomeEnable,jdbcType=INTEGER}
-    where group_id = #{groupId,jdbcType=INTEGER}
+    where group_id = #{groupId,jdbcType=BIGINT}
   </update>
 </mapper>

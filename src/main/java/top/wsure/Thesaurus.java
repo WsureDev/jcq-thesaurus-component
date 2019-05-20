@@ -5,24 +5,28 @@ import com.sobte.cqp.jcq.entity.ICQVer;
 import com.sobte.cqp.jcq.entity.IMsg;
 import com.sobte.cqp.jcq.entity.IRequest;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import top.wsure.component.Configs;
 import top.wsure.component.DatebaseUtils;
 import top.wsure.config.Option;
-import top.wsure.config.RegexString;
 import top.wsure.function.Instructions;
-import top.wsure.service.SettingService;
 import top.wsure.service.TableService;
+import top.wsure.utils.ConnectorUtil;
 
 import javax.swing.*;
 import java.io.IOException;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"top.wsure.dao","top.wsure.component"})
-public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
+public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest,WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
     // 记住编译后的文件和json也要使用appid做文件名
 //    public static final String AppID = Configs.configs.getAppId();//"top.wsure.thesaurus";
@@ -43,7 +47,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
         thesaurus.privateMsg(0, 10001, 2234567819L, "mssage2", 0);
-        thesaurus.privateMsg(0, 10001, 2234567819L, "模糊问问你妈答你的回答尼玛", 0);
+        thesaurus.privateMsg(0, 10001, 2234567819L, "asd", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
         thesaurus.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
@@ -65,7 +69,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
          * 本函数【禁止】处理其他任何代码，以免发生异常情况。
          * 如需执行初始化代码请在 startup 事件中执行（Type=1001）。
          */
-        CQ.logInfo("AppId",AppID);
+        CQ.logInfo("AppId",this.getClass().getName().toLowerCase());
         return CQAPIVER + "," + AppID;
     }
 
@@ -177,5 +181,30 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
     public int menuB() {
         JOptionPane.showMessageDialog(null, "这是测试菜单B，可以在这里加载窗口");
         return 0;
+    }
+
+    @Override
+    public void customize(ConfigurableServletWebServerFactory factory) {
+        ((TomcatServletWebServerFactory)factory).addConnectorCustomizers(new TomcatConnectorCustomizer() {
+            @Override
+            public void customize(Connector connector) {
+
+                int port = new ConnectorUtil().findAvailablePort(8083,8084);
+                try {
+                    if(port<0)
+                        throw new Exception("no available port !");
+                    else
+                        connector.setPort(port);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+                protocol.setMaxConnections(200);
+                protocol.setMaxThreads(200);
+                protocol.setSelectorTimeout(3000);
+                protocol.setSessionTimeout(3000);
+                protocol.setConnectionTimeout(3000);
+            }
+        });
     }
 }

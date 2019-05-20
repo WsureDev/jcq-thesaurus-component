@@ -10,7 +10,7 @@ public class ManageService {
     @Autowired
     private ManageMapper manageMapper;
 
-    public int deleteByPrimaryKey(Integer manageId){
+    public int deleteByPrimaryKey(Long manageId){
         return manageMapper.deleteByPrimaryKey(manageId);
     }
 
@@ -22,7 +22,7 @@ public class ManageService {
         return manageMapper.insertSelective(record);
     }
 
-    public Manage selectByPrimaryKey(Integer manageId){
+    public Manage selectByPrimaryKey(Long manageId){
         return manageMapper.selectByPrimaryKey(manageId);
     }
 
