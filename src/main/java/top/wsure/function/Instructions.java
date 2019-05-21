@@ -2,8 +2,10 @@ package top.wsure.function;
 
 import top.wsure.component.DatebaseUtils;
 import top.wsure.config.RegexString;
+import top.wsure.entity.Groups;
 import top.wsure.entity.Lexicon;
 import top.wsure.entity.Manage;
+import top.wsure.service.GroupsService;
 import top.wsure.service.ManageService;
 
 import java.util.regex.Matcher;
@@ -16,8 +18,13 @@ public class Instructions {
     static DatebaseUtils datebaseUtils = DatebaseUtils.datebaseUtils;
 
     public static boolean chechPromise(long fromGroup,long fromQQ){
-        CQ.getGroupMemberInfo(fromGroup,fromQQ).getAuthority();
-//        datebaseUtils;
+        int authLevel = CQ.getGroupMemberInfo(fromGroup,fromQQ).getAuthority();
+        GroupsService groupsService = datebaseUtils.getGroupsService();
+        Groups groups = groupsService.selectByPrimaryKey(fromGroup);
+        if(groups!=null&&groups.getEditerLevel().intValue()<=authLevel)
+            return true;
+        if(chechPromise(fromQQ))
+            return true;
         return false;
     }
 
@@ -37,11 +44,12 @@ public class Instructions {
         return null;
     }
 
-    public static Lexicon msgToLexicon(String instructType, String msg){
+    public static Lexicon msgToLexicon(String instructType, String msg,long fromQQ){
         Lexicon lexicon = new Lexicon();
         lexicon.setQuestion(getMatcher(RegexString.matchRegexs.get(instructType),msg));
         lexicon.setAnswer(getMatcher(RegexString.matchRegexs.get("answer"),msg));
         lexicon.setType(lexiconType(instructType));
+        lexicon.setCommitUser(fromQQ);
         return lexicon;
     }
 
@@ -74,5 +82,17 @@ public class Instructions {
 
     public static String msgToQueryWord(String instructType, String msg){
         return getMatcher(RegexString.matchRegexs.get(instructType),msg);
+    }
+
+    public static String getType(String instructType){
+        return instructType.substring(2);
+    }
+    public static String getTable(String instructType,Long groupId){
+        switch (instructType.substring(0,1)){
+            case "p":return "private";
+            case "g":return "global";
+            case "n":return "group_"+groupId;
+        }
+        return "private";
     }
 }

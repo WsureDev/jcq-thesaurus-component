@@ -64,12 +64,12 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
      */
     public String appInfo() {
         // 记住编译后的文件和json也要使用appid做文件名
-        final String AppID = Configs.configs.getAppId();
+        final String AppID = this.getClass().getName().toLowerCase();
         /**
          * 本函数【禁止】处理其他任何代码，以免发生异常情况。
          * 如需执行初始化代码请在 startup 事件中执行（Type=1001）。
          */
-        CQ.logInfo("AppId",this.getClass().getName().toLowerCase());
+        CQ.logInfo("AppId",AppID);
         return CQAPIVER + "," + AppID;
     }
 
@@ -122,7 +122,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         String instructType = Instructions.checkInstruct(msg);
         CQ.logInfo(msg,instructType);
         if(instructType!=null&&Instructions.lexiconType(instructType)>0)
-            CQ.logInfo("lexicon",Instructions.msgToLexicon(instructType,msg).toString());
+            CQ.logInfo("lexicon",Instructions.msgToLexicon(instructType,msg,fromQQ).toString());
 
         return MSG_IGNORE;
     }

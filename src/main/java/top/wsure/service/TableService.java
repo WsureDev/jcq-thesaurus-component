@@ -40,7 +40,7 @@ public class TableService {
         return tableMapper.resetSequence(tableName(groupId));
     }
 
-    private String tableName(Long groupId){
+    public static String tableName(Long groupId){
         return GROUP_PRE+groupId;
     }
 }

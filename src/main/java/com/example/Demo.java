@@ -2,6 +2,7 @@ package com.example;
 
 import com.sobte.cqp.jcq.entity.*;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
+import com.sobte.cqp.jcq.message.CQCode;
 
 import javax.swing.*;
 
@@ -140,6 +141,7 @@ public class Demo extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     public int privateMsg(int subType, int msgId, long fromQQ, String msg, int font) {
         // 这里处理消息
+
         CQ.sendPrivateMsg(fromQQ, "你发送了这样的消息：" + msg + "\n来自Java插件");
         return MSG_IGNORE;
     }

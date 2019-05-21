@@ -7,9 +7,7 @@ import top.wsure.config.RegexString;
 import top.wsure.dao.ManageMapper;
 import top.wsure.dao.SettingMapper;
 import top.wsure.entity.Setting;
-import top.wsure.service.ManageService;
-import top.wsure.service.SettingService;
-import top.wsure.service.TableService;
+import top.wsure.service.*;
 
 import javax.annotation.PostConstruct;
 
@@ -42,6 +40,20 @@ public class DatebaseUtils {
 
     public ManageService getManageService() {
         return manageService;
+    }
+
+    @Autowired
+    private GroupsService groupsService;
+
+    public GroupsService getGroupsService() {
+        return groupsService;
+    }
+
+    @Autowired
+    private LexiconService lexiconService;
+
+    public LexiconService getLexiconService() {
+        return lexiconService;
     }
 
     @PostConstruct
