@@ -23,6 +23,7 @@ public class LexiconService {
     }
 
     public int insertSelective(LexiconDto record){
+        System.out.println(record.toString());
         return lexiconMapper.insertSelective(record);
     }
 

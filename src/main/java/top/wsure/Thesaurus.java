@@ -1,9 +1,6 @@
 package top.wsure;
 
-import com.sobte.cqp.jcq.entity.CQDebug;
-import com.sobte.cqp.jcq.entity.ICQVer;
-import com.sobte.cqp.jcq.entity.IMsg;
-import com.sobte.cqp.jcq.entity.IRequest;
+import com.sobte.cqp.jcq.entity.*;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
@@ -18,6 +15,7 @@ import top.wsure.component.Configs;
 import top.wsure.component.DatebaseUtils;
 import top.wsure.config.Option;
 import top.wsure.function.Instructions;
+import top.wsure.function.MsgHandle;
 import top.wsure.service.TableService;
 import top.wsure.utils.ConnectorUtil;
 
@@ -46,7 +44,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         // 模拟私聊消息
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
-        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage2", 0);
+        thesaurus.privateMsg(0, 10001, 222289222L, "精确问asdads答aaa", 0);
         thesaurus.privateMsg(0, 10001, 2234567819L, "asd", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
@@ -116,19 +114,45 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
             CQ.logInfo("SpringBoot is not ready","privateMsg:"+msg);
             return MSG_IGNORE;
         }
-        TableService tableService = datebaseUtils.getTableService();
-        CQ.logInfo("has groups ?",""+tableService.hasTable("groups"));
-        CQ.logInfo("masterId",Option.masterId);
-        String instructType = Instructions.checkInstruct(msg);
-        CQ.logInfo(msg,instructType);
-        if(instructType!=null&&Instructions.lexiconType(instructType)>0)
-            CQ.logInfo("lexicon",Instructions.msgToLexicon(instructType,msg,fromQQ).toString());
-
+        MsgHandle.privateMsgInstruct(subType, msgId, fromQQ, msg, font);
+        MsgHandle.privateMsgChat(subType, msgId, fromQQ, msg, font);
         return MSG_IGNORE;
     }
 
-    public int groupMsg(int i, int i1, long l, long l1, String s, String s1, int i2) {
-        return 0;
+    /**
+     * 群消息 (Type=2)<br>
+     * 本方法会在酷Q【线程】中被调用。<br>
+     *
+     * @param subType       子类型，目前固定为1
+     * @param msgId         消息ID
+     * @param fromGroup     来源群号
+     * @param fromQQ        来源QQ号
+     * @param fromAnonymous 来源匿名者
+     * @param msg           消息内容
+     * @param font          字体
+     * @return 关于返回值说明, 见 {@link #privateMsg 私聊消息} 的方法
+     */
+    public int groupMsg(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
+                        int font) {
+        // 如果消息来自匿名者
+        if (fromQQ == 80000000L && !fromAnonymous.equals("")) {
+            // 将匿名用户信息放到 anonymous 变量中
+            Anonymous anonymous = CQ.getAnonymous(fromAnonymous);
+        }
+
+        // 解析CQ码案例 如：[CQ:at,qq=100000]
+        // 解析CQ码 常用变量为 CC(CQCode) 此变量专为CQ码这种特定格式做了解析和封装
+        // CC.analysis();// 此方法将CQ码解析为可直接读取的对象
+        // 解析消息中的QQID
+        //long qqId = CC.getAt(msg);// 此方法为简便方法，获取第一个CQ:at里的QQ号，错误时为：-1000
+        //List<Long> qqIds = CC.getAts(msg); // 此方法为获取消息中所有的CQ码对象，错误时返回 已解析的数据
+        // 解析消息中的图片
+        //CQImage image = CC.getCQImage(msg);// 此方法为简便方法，获取第一个CQ:image里的图片数据，错误时打印异常到控制台，返回 null
+        //List<CQImage> images = CC.getCQImages(msg);// 此方法为获取消息中所有的CQ图片数据，错误时打印异常到控制台，返回 已解析的数据
+
+        // 这里处理消息
+        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+        return MSG_IGNORE;
     }
 
     public int discussMsg(int i, int i1, long l, long l1, String s, int i2) {
@@ -189,7 +213,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
             @Override
             public void customize(Connector connector) {
 
-                int port = new ConnectorUtil().findAvailablePort(8083,8084);
+                int port = new ConnectorUtil().findAvailablePort(8080,8100);
                 try {
                     if(port<0)
                         throw new Exception("no available port !");

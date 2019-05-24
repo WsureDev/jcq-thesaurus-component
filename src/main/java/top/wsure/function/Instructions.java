@@ -91,7 +91,7 @@ public class Instructions {
         switch (instructType.substring(0,1)){
             case "p":return "private";
             case "g":return "global";
-            case "n":return "group_"+groupId;
+            case "n":return groupId==null?"private":"group_"+groupId;
         }
         return "private";
     }

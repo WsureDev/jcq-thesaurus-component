@@ -18,6 +18,19 @@ public class LexiconDto extends Lexicon {
         this.setCommitTime(lexicon.getCommitTime());
         this.setCommitUser(lexicon.getCommitUser());
         this.setWordId(lexicon.getWordId());
-        this.tableName = tableName;
+        this.setTableName(tableName);
+    }
+
+    @Override
+    public String toString() {
+        return "LexiconDto{" +
+                "tableName='" + tableName + '\'' +
+                "wordId=" + getWordId() +
+                ", question='" + getQuestion() + '\'' +
+                ", answer='" + getAnswer() + '\'' +
+                ", type=" + getType() +
+                ", commitTime='" + getCommitTime() + '\'' +
+                ", commitUser=" + getCommitUser() +
+                '}';
     }
 }

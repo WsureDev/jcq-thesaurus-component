@@ -15,15 +15,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="top.wsure.entity.LexiconDto" >
     select 
     <include refid="Base_Column_List" />
-    from #{tableName,jdbcType=VARCHAR}
+    from ${tableName}
     where word_id = #{wordId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="top.wsure.entity.LexiconDto" >
-    delete from #{tableName,jdbcType=VARCHAR}
+    delete from ${tableName}
     where word_id = #{wordId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="top.wsure.entity.LexiconDto" >
-    insert into #{tableName,jdbcType=VARCHAR} (word_id, question, answer,
+    insert into ${tableName} (word_id, question, answer,
       type, commit_time, commit_user
       )
     values (#{wordId,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
@@ -31,7 +31,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="top.wsure.entity.LexiconDto" >
-    insert into #{tableName,jdbcType=VARCHAR}
+    insert into ${tableName}
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="wordId != null" >
         word_id,
@@ -74,7 +74,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.wsure.entity.LexiconDto" >
-    update #{tableName,jdbcType=VARCHAR}
+    update ${tableName}
     <set >
       <if test="question != null" >
         question = #{question,jdbcType=VARCHAR},
@@ -95,7 +95,7 @@
     where word_id = #{wordId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wsure.entity.LexiconDto" >
-    update #{tableName,jdbcType=VARCHAR}
+    update ${tableName}
     set question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
@@ -105,7 +105,7 @@
   </update>
   <select id="selectByQuestion" parameterType="top.wsure.entity.LexiconDto" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
-    from #{tableName,jdbcType=VARCHAR}
+    from ${tableName}
     <where>
       <choose>
         <when test="type == 1">
