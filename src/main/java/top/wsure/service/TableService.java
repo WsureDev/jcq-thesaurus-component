@@ -26,6 +26,11 @@ public class TableService {
         return hasTable(groupId);
     }
 
+    public boolean createNewGroup(String name){
+        tableMapper.createNewGroup(name);
+        return hasTable(name);
+    }
+
     public int copyLexicon(Long fromGroupId,Long toGroupId){
         return tableMapper.copyLexicon(new HashMap<String, String>(){
             {

@@ -11,13 +11,10 @@ import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
-import top.wsure.component.Configs;
 import top.wsure.component.DatebaseUtils;
-import top.wsure.config.Option;
-import top.wsure.function.Instructions;
 import top.wsure.function.MsgHandle;
-import top.wsure.service.TableService;
 import top.wsure.utils.ConnectorUtil;
+import top.wsure.utils.IpUtil;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -25,7 +22,8 @@ import java.io.IOException;
 @SpringBootApplication
 @MapperScan(basePackages = {"top.wsure.dao","top.wsure.component"})
 public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest,WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
-
+    public static int hostPort = 0;
+    public static String hostname ;
     // 记住编译后的文件和json也要使用appid做文件名
 //    public static final String AppID = Configs.configs.getAppId();//"top.wsure.thesaurus";
 
@@ -37,18 +35,26 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         Thesaurus thesaurus = new Thesaurus();
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
 
-        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage1", 0);
+//        thesaurus.privateMsg(0, 10001, 2234567819L, "mssage1", 0);
         thesaurus.startup();// 程序运行开始 调用应用初始化方法
         thesaurus.enable();// 程序初始化完成后，启用应用，让应用正常工作
         // 开始模拟发送消息
         // 模拟私聊消息
         // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
         CQ.logInfo("test",thesaurus.appInfo());
-        thesaurus.privateMsg(0, 10001, 222289222L, "精确问asdads答aaa", 0);
-        thesaurus.privateMsg(0, 10001, 2234567819L, "asd", 0);
+//        thesaurus.privateMsg(0, 10001, 222289222L, "模糊问asdads4答aaa", 0);
+//        thesaurus.privateMsg(0, 10001, 2234567819L, "asd", 0);
         // 模拟群聊消息
         // 开始模拟群聊消息
-        thesaurus.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
+//        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "模糊问xx答xwsxw", 0);
+//        thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "正则问^\\d{5}$答456456", 0);
+//        thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "xxx", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "关闭词库", 0);
+        thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "12345", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "axxa", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "查问xx", 0);
+
+
         // 依次类推，可以根据实际情况修改参数，和方法测试效果
         // 以下是收尾触发函数
         // demo.disable();// 实际过程中程序结束不会触发disable，只有用户关闭了此插件才会触发
@@ -75,6 +81,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
 
         SpringApplication.run(Thesaurus.class);
         CQ.logInfo("Thesaurus","SpringBoot is Start");
+        hostname = IpUtil.INTERNET_IP+":"+hostPort;
         return 0;
     }
 
@@ -151,7 +158,17 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         //List<CQImage> images = CC.getCQImages(msg);// 此方法为获取消息中所有的CQ图片数据，错误时打印异常到控制台，返回 已解析的数据
 
         // 这里处理消息
-        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+//        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+
+        DatebaseUtils datebaseUtils = DatebaseUtils.datebaseUtils;
+        if(datebaseUtils == null)
+        {
+            CQ.logInfo("SpringBoot is not ready","privateMsg:"+msg);
+            return MSG_IGNORE;
+        }
+        MsgHandle.groupMsgInstruct(subType, msgId, fromGroup, fromQQ, fromAnonymous, msg, font);
+        MsgHandle.groupMsgChat(subType, msgId, fromGroup, fromQQ, fromAnonymous, msg, font);
+
         return MSG_IGNORE;
     }
 
@@ -193,7 +210,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
      * @return 固定返回0
      */
     public int menuA() throws IOException {
-        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler http://www.baidu.com");
+        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler http://"+hostname);
         return 0;
     }
 
@@ -217,8 +234,10 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
                 try {
                     if(port<0)
                         throw new Exception("no available port !");
-                    else
+                    else{
                         connector.setPort(port);
+                        hostPort = port;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

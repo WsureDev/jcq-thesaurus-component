@@ -32,4 +32,15 @@ public class GroupsService {
     public int updateByPrimaryKey(Groups record){
         return groupsMapper.updateByPrimaryKey(record);
     }
+
+    public int setGroup(Groups groups){
+        Groups g = groupsMapper.selectByPrimaryKey(groups.getGroupId());
+        int res = 0;
+        if(g==null){
+            res = groupsMapper.insert(groups);
+        } else {
+            res = groupsMapper.updateByPrimaryKeySelective(groups);
+        }
+        return res;
+    }
 }

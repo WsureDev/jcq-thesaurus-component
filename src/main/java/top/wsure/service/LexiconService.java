@@ -13,6 +13,8 @@ import java.util.List;
 public class LexiconService {
     @Autowired
     private LexiconMapper lexiconMapper;
+    @Autowired
+    private TableService tableService;
 
     public int deleteByPrimaryKey(LexiconDto record){
         return lexiconMapper.deleteByPrimaryKey(record);
@@ -23,7 +25,11 @@ public class LexiconService {
     }
 
     public int insertSelective(LexiconDto record){
-        System.out.println(record.toString());
+        if(!tableService.hasTable(record.getTableName()))
+        {
+            if(!tableService.createNewGroup(record.getTableName()))
+                return 0;
+        }
         return lexiconMapper.insertSelective(record);
     }
 
@@ -40,17 +46,26 @@ public class LexiconService {
     }
 
     public List<Lexicon> selectByQuestion(LexiconDto record){
-        List<Lexicon> lexicons = selectByQuestion(record);
-        if(record.getType().intValue()<3){
-            return lexicons;
-        }
-        List<Lexicon> regexRes = new ArrayList<>();
+        List<Lexicon> lexicons = lexiconMapper.selectByQuestion(record);
+        List<Lexicon> res = new ArrayList<>();
         for (Lexicon lexicon:lexicons){
-            if(record.getQuestion().matches(lexicon.getAnswer())){
-                regexRes.add(lexicon);
+            switch (lexicon.getType())
+            {
+                case 1:
+                case 2:
+                    res.add(lexicon);break;
+                case 3:
+                    if(record.getQuestion().matches(lexicon.getQuestion())){
+                        res.add(lexicon);
+                    }
+                    break;
             }
+
         }
-        return regexRes;
+        return res;
     }
 
+    public List<Lexicon> queryLexicon(LexiconDto record){
+        return lexiconMapper.queryLexicon(record);
+    }
 }

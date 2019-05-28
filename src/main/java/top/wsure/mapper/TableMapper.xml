@@ -6,7 +6,7 @@
     </select>
 
     <update id="createNewGroup" parameterType="String">
-        CREATE TABLE IF NOT EXISTS #{groupId,jdbcType=VARCHAR} (
+        CREATE TABLE IF NOT EXISTS ${tableName} (
             word_id  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             question  TEXT NOT NULL,
             answer  TEXT NOT NULL,

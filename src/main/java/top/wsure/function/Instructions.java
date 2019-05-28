@@ -4,6 +4,7 @@ import top.wsure.component.DatebaseUtils;
 import top.wsure.config.RegexString;
 import top.wsure.entity.Groups;
 import top.wsure.entity.Lexicon;
+import top.wsure.entity.LexiconDto;
 import top.wsure.entity.Manage;
 import top.wsure.service.GroupsService;
 import top.wsure.service.ManageService;
@@ -44,13 +45,13 @@ public class Instructions {
         return null;
     }
 
-    public static Lexicon msgToLexicon(String instructType, String msg,long fromQQ){
+    public static LexiconDto msgToLexicon(String instructType, String msg,long fromQQ,String tableName){
         Lexicon lexicon = new Lexicon();
         lexicon.setQuestion(getMatcher(RegexString.matchRegexs.get(instructType),msg));
         lexicon.setAnswer(getMatcher(RegexString.matchRegexs.get("answer"),msg));
         lexicon.setType(lexiconType(instructType));
         lexicon.setCommitUser(fromQQ);
-        return lexicon;
+        return new LexiconDto(lexicon,tableName);
     }
 
     public static String getMatcher(String regex, String source) {
@@ -76,12 +77,21 @@ public class Instructions {
         return 0;
     }
 
-    public static Integer msgToDeleteId(String instructType, String msg){
-        return Integer.parseInt(getMatcher(RegexString.matchRegexs.get(instructType),msg));
+    public static String lexiconType(int type){
+        String [] types = new String[] { "精确","模糊","正则"};
+        return types[type-1];
     }
 
-    public static String msgToQueryWord(String instructType, String msg){
-        return getMatcher(RegexString.matchRegexs.get(instructType),msg);
+    public static LexiconDto msgToDeleteLexicon(String instructType, String msg,String table){
+        Lexicon lexicon  = new Lexicon();
+        lexicon.setWordId(Integer.parseInt(getMatcher(RegexString.matchRegexs.get(instructType),msg)));
+        return new LexiconDto(lexicon,table);
+    }
+
+    public static LexiconDto msgToQueryLexicon(String instructType, String msg,String table){
+        Lexicon lexicon = new Lexicon();
+        lexicon.setQuestion(getMatcher(RegexString.matchRegexs.get(instructType),msg));
+        return new LexiconDto(lexicon,table);
     }
 
     public static String getType(String instructType){
@@ -91,7 +101,16 @@ public class Instructions {
         switch (instructType.substring(0,1)){
             case "p":return "private";
             case "g":return "global";
-            case "n":return groupId==null?"private":"group_"+groupId;
+            case "n":return "group_"+groupId;
+        }
+        return "private";
+    }
+
+    public static String getTable(String instructType){
+        switch (instructType.substring(0,1)){
+            case "p":return "private";
+            case "g":return "global";
+            case "n":return "private";
         }
         return "private";
     }

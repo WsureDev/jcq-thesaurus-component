@@ -106,20 +106,13 @@
   <select id="selectByQuestion" parameterType="top.wsure.entity.LexiconDto" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from ${tableName}
-    <where>
-      <choose>
-        <when test="type == 1">
-          question = #{question,jdbcType=VARCHAR}
-        </when>
-        <when test="type == 2">
-          question like CONCAT('%',#{question,jdbcType=VARCHAR},'%')
-        </when>
-        <when test="type == 3">
-
-        </when>
-      </choose>
-      and type = #{type,jdbcType=INTEGER}
-    </where>
+    where (question = #{question,jdbcType=VARCHAR} and type = 1)
+    or (replace( #{question,jdbcType=VARCHAR},question,'') != #{question,jdbcType=VARCHAR} and type = 2)
+    or type = 3
   </select>
-
+  <select id="queryLexicon" parameterType="top.wsure.entity.LexiconDto" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from ${tableName}
+    where replace(question,#{question,jdbcType=VARCHAR},'') != question
+  </select>
 </mapper>

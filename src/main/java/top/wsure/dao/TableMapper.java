@@ -1,11 +1,13 @@
 package top.wsure.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.Map;
 
 public interface TableMapper {
     boolean hasTable(String name);
 
-    int createNewGroup(String groupId);
+    int createNewGroup(@Param("tableName") String tableName);
 
     int copyLexicon(Map<String,String> groups);
 

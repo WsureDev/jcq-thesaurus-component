@@ -40,4 +40,11 @@ public class Groups {
     public void setWelcomeEnable(Integer welcomeEnable) {
         this.welcomeEnable = welcomeEnable;
     }
+
+    public Groups(Long groupId, Integer enable, Integer editerLevel) {
+        this.groupId = groupId;
+        this.enable = enable;
+        this.editerLevel = editerLevel;
+        this.welcomeEnable = 0;
+    }
 }

@@ -19,4 +19,6 @@ public interface LexiconMapper {
     int updateByPrimaryKey(LexiconDto record);
 
     List<Lexicon> selectByQuestion(LexiconDto record);
+
+    List<Lexicon> queryLexicon(LexiconDto record);
 }

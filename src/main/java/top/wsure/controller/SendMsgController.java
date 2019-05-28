@@ -13,12 +13,16 @@ import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 public class SendMsgController {
 
     @RequestMapping("/send")
-    public int test(@RequestBody Map<String,Object> msg){
-        return CQ.sendPrivateMsg((Integer) msg.get("qq"),(String) msg.get("msg"));
+    public int test(Long qq,String msg){
+        return CQ.sendPrivateMsg(qq,msg);
     }
 
     @RequestMapping("/regex")
-    public String testRegex(@RequestBody Map<String,Object> msg){
-        return Instructions.getMatcher((String) msg.get("regex"), (String) msg.get("test"));
+    public String subRegex(String regex,String test){
+        return Instructions.getMatcher(regex,test);
+    }
+    @RequestMapping("/test")
+    public boolean testRegex(String regex,String string){
+        return string.matches(regex);
     }
 }
