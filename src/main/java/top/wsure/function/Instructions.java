@@ -24,6 +24,8 @@ public class Instructions {
         Groups groups = groupsService.selectByPrimaryKey(fromGroup);
         if(groups!=null&&groups.getEditerLevel().intValue()<=authLevel)
             return true;
+        if(groups==null&&2<=authLevel)
+            return true;
         if(chechPromise(fromQQ))
             return true;
         return false;

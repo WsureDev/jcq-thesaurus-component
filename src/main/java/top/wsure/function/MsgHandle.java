@@ -94,7 +94,7 @@ public class MsgHandle {
             }
 
         } else {
-            CQ.sendGroupMsg(fromQQ,"权限不足");
+            CQ.sendGroupMsg(fromGroup,"权限不足");
         }
     }
 
