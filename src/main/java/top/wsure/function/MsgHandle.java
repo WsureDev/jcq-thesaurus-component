@@ -86,10 +86,10 @@ public class MsgHandle {
                     sendGroupInfoMsg(lexicons.size(),lexiconListToString(lexicons),"未找到",fromGroup);
                     break;
                 case "enable":
-                    enable(new Groups(fromGroup,1,2));
+                    sendGroupInfoMsg(enable(new Groups(fromGroup,1,2)),"开启词库成功","开启词库失败",fromGroup);
                     break;
                 case "disable":
-                    enable(new Groups(fromGroup,0,2));
+                    sendGroupInfoMsg(enable(new Groups(fromGroup,0,2)),"关闭词库成功","关闭词库失败",fromGroup);
                     break;
             }
 
@@ -114,15 +114,20 @@ public class MsgHandle {
                                         int font){
         if(isEnable(fromGroup))
         {
-            Lexicon lexicon = new Lexicon();
-            lexicon.setQuestion(msg);
-            LexiconDto lexiconDto = new LexiconDto(lexicon,tableName(fromGroup));
-            List<Lexicon> lexicons = question(lexiconDto);
+            List<Lexicon> lexicons = getLexicons(msg,tableName(fromGroup));
+            lexicons.addAll(getLexicons(msg,"global"));
             for (Lexicon l:lexicons)
             {
                 CQ.sendGroupMsg(fromGroup,l.getAnswer());
             }
         }
+    }
+
+    public static List<Lexicon> getLexicons(String msg, String table){
+        Lexicon lexicon = new Lexicon();
+        lexicon.setQuestion(msg);
+        LexiconDto lexiconDto = new LexiconDto(lexicon,table);
+        return question(lexiconDto);
     }
 
     public static int addLex(LexiconDto lexiconDto){

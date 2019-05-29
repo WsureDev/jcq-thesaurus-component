@@ -49,10 +49,10 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
 //        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "模糊问xx答xwsxw", 0);
 //        thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "正则问^\\d{5}$答456456", 0);
 //        thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "xxx", 0);
-        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "关闭词库", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "开启词库", 0);
         thesaurus.groupMsg(0, 10006, 789123L, 844157922L, "", "12345", 0);
-        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "axxa", 0);
-        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "查问xx", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "模糊问aa答[]", 0);
+        thesaurus.groupMsg(0, 10006, 123456L, 844157922L, "", "aaaa", 0);
 
 
         // 依次类推，可以根据实际情况修改参数，和方法测试效果
@@ -118,7 +118,7 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         DatebaseUtils datebaseUtils = DatebaseUtils.datebaseUtils;
         if(datebaseUtils == null)
         {
-            CQ.logInfo("SpringBoot is not ready","privateMsg:"+msg);
+            CQ.logInfo(CC.at(fromQQ)+"SpringBoot is not ready","privateMsg:"+msg);
             return MSG_IGNORE;
         }
         MsgHandle.privateMsgInstruct(subType, msgId, fromQQ, msg, font);
