@@ -14,10 +14,15 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import top.wsure.component.DatebaseUtils;
 import top.wsure.function.MsgHandle;
 import top.wsure.utils.ConnectorUtil;
+import top.wsure.utils.FileUtil;
 import top.wsure.utils.IpUtil;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import static top.wsure.utils.FileUtil.getFiles;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"top.wsure.dao","top.wsure.component"})
@@ -82,6 +87,10 @@ public class Thesaurus  extends JcqAppAbstract implements ICQVer, IMsg, IRequest
         SpringApplication.run(Thesaurus.class);
         CQ.logInfo("Thesaurus","SpringBoot is Start");
         hostname = IpUtil.INTERNET_IP+":"+hostPort;
+        List<File> files = getFiles("D:\\windows\\desktop\\新建文件夹\\com.austin.ciku");
+        for(File file:files){
+            CQ.logInfo("files",file.getName());
+        }
         return 0;
     }
 
