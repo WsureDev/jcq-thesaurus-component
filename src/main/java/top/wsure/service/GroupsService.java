@@ -8,6 +8,8 @@ import top.wsure.entity.Groups;
 public class GroupsService {
     @Autowired
     private GroupsMapper groupsMapper;
+    @Autowired
+    private TableService tableService;
 
     public int deleteByPrimaryKey(Long groupId){
         return groupsMapper.deleteByPrimaryKey(groupId);
@@ -34,6 +36,10 @@ public class GroupsService {
     }
 
     public int setGroup(Groups groups){
+        if(!tableService.hasTable(groups.getGroupId()))
+        {
+            tableService.createNewGroup(groups.getGroupId());
+        }
         Groups g = groupsMapper.selectByPrimaryKey(groups.getGroupId());
         int res = 0;
         if(g==null){
