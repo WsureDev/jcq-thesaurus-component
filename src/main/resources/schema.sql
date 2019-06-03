@@ -26,6 +26,14 @@ CREATE TABLE IF NOT EXISTS "global" (
 "commit_user"  BIGINT
 );
 
+CREATE TABLE IF NOT EXISTS "disable" (
+"qq"  BIGINT NOT NULL,
+"group_id"  BIGINT NOT NULL,
+"commit_user"  BIGINT NOT NULL,
+"commit_time"  TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+);
+
+
 -- ----------------------------
 -- Table structure for private
 -- ----------------------------

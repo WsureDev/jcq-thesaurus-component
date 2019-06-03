@@ -1,9 +1,12 @@
 package top.wsure.function;
 
 import top.wsure.component.DatebaseUtils;
+import top.wsure.config.RegexString;
+import top.wsure.entity.Disable;
 import top.wsure.entity.Groups;
 import top.wsure.entity.Lexicon;
 import top.wsure.entity.LexiconDto;
+import top.wsure.service.DisableService;
 import top.wsure.service.GroupsService;
 import top.wsure.service.LexiconService;
 
@@ -58,13 +61,17 @@ public class MsgHandle {
     public static void groupMsgInstruct(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
                                         int font){
         //判断是否是命令
-        CQ.logInfo("groupMsgInstruct",msg);
         String instructType = checkInstruct(msg);
         if(instructType==null){
             return;
         }
-
+        CQ.logInfo("groupMsgInstruct",msg);
         String table = getTable(instructType,fromGroup);
+        if(fromQQ == 1000000L){
+
+            DisableHandle.banMemberIfLifted(msgToDisable(instructType,msg,fromGroup));
+            return;
+        }
         //校验权限
         if(chechPromise(fromGroup,fromQQ)){
             //执行操作
@@ -93,8 +100,26 @@ public class MsgHandle {
                     break;
             }
 
-        } else {
+
+        } else  {
             CQ.sendGroupMsg(fromGroup,"权限不足");
+        }
+        if(chechPromise(fromQQ)){
+            switch (getType(instructType)){
+                case "addbl":
+                    Disable addDisable = msgToDisable(instructType,msg,fromGroup,fromQQ);
+                    sendGroupInfoMsg(blacklist(addDisable,"addbl"),"添加成功","添加失败",fromGroup);
+                    break;
+                case "querybl":
+                    Disable queryDisable = msgToDisable(instructType,msg,fromGroup);
+                    List<Disable> disables = querybl(queryDisable);
+                    sendGroupInfoMsg(disables.size(),disables.toString(),"未找到",fromGroup);
+                    break;
+                case "delbl":
+                    Disable delDisable = msgToDisable(instructType,msg,fromGroup);
+                    sendGroupInfoMsg(blacklist(delDisable,"delbl"),"删除成功","删除失败",fromGroup);
+                    break;
+            }
         }
     }
 
@@ -112,6 +137,8 @@ public class MsgHandle {
 
     public static void groupMsgChat(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
                                         int font){
+        DisableHandle.delMsgIfBan(new Disable(fromQQ,fromGroup,null),msgId);
+
         if(isEnable(fromGroup))
         {
             List<Lexicon> lexicons = getLexicons(msg,tableName(fromGroup));
@@ -154,6 +181,24 @@ public class MsgHandle {
         GroupsService groupsService = datebaseUtils.getGroupsService();
         return groupsService.setGroup(groups);
     }
+
+    public static int blacklist(Disable disable,String type){
+        DisableService disableService = datebaseUtils.getDisableService();
+        switch (type)
+        {
+            case "addbl":
+                return disableService.insertSelective(disable);
+            case "delbl":
+                return disableService.delete(disable);
+        }
+        return 0;
+    }
+
+    public static List<Disable> querybl(Disable disable){
+        DisableService disableService = datebaseUtils.getDisableService();
+        return disableService.queryDisable(disable);
+    }
+
     /**
      * 发送消息
      * @param res
@@ -194,4 +239,5 @@ public class MsgHandle {
             return true;
         return false;
     }
+
 }

@@ -56,6 +56,13 @@ public class DatebaseUtils {
         return lexiconService;
     }
 
+    @Autowired
+    private DisableService disableService;
+
+    public DisableService getDisableService() {
+        return disableService;
+    }
+
     @PostConstruct
     public void init(){
         datebaseUtils = this;

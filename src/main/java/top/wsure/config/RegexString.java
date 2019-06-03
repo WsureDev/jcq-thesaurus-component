@@ -8,6 +8,7 @@ import static com.sobte.cqp.jcq.event.JcqApp.CQ;
 
 public class RegexString {
 
+    public static String[] noSuffixKey = {"query","delete","lifted","addbl","delbl","querybl"};
     public static Map<String,String> regexs = new HashMap<String, String>(){
 
         TestRegexString model = new TestRegexString();
@@ -42,7 +43,8 @@ public class RegexString {
                 field.setAccessible(true);
                 try {
                     CQ.logInfo(field.getName() , ""+field.get(model) );
-                    boolean noSufix = field.getName().equals("query") || field.getName().equals("delete");
+                    boolean noSufix = noSufix(field.getName());
+                            //field.getName().equals("query") || field.getName().equals("delete") || field.getName().equals("lifted");
 
                     //插入普通:
                     put("n_"+field.getName(), prefix+field.get(model) + (!noSufix?sufix:""));
@@ -56,5 +58,16 @@ public class RegexString {
             }
         }
     };
+
+
+    public static boolean noSufix(String fieldName){
+        for (String s:noSuffixKey)
+        {
+            if(s.equals(fieldName))
+                return true;
+        }
+
+        return false;
+    }
 
 }

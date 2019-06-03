@@ -23,4 +23,10 @@ public class Option {
     public static String globalKey = "全局";
 
     public static String privateKey = "私聊";
+
+    public static String addblKey = "加黑";
+
+    public static String queryblKey = "查黑";
+
+    public static String delblKey = "删黑";
 }

@@ -1,11 +1,9 @@
 package top.wsure.function;
 
+import com.sobte.cqp.jcq.entity.Member;
 import top.wsure.component.DatebaseUtils;
 import top.wsure.config.RegexString;
-import top.wsure.entity.Groups;
-import top.wsure.entity.Lexicon;
-import top.wsure.entity.LexiconDto;
-import top.wsure.entity.Manage;
+import top.wsure.entity.*;
 import top.wsure.service.GroupsService;
 import top.wsure.service.ManageService;
 
@@ -19,7 +17,10 @@ public class Instructions {
     static DatebaseUtils datebaseUtils = DatebaseUtils.datebaseUtils;
 
     public static boolean chechPromise(long fromGroup,long fromQQ){
-        int authLevel = CQ.getGroupMemberInfo(fromGroup,fromQQ).getAuthority();
+        Member m =CQ.getGroupMemberInfo(fromGroup,fromQQ);
+        if(m==null)
+            return false;
+        int authLevel = m.getAuthority();
         GroupsService groupsService = datebaseUtils.getGroupsService();
         Groups groups = groupsService.selectByPrimaryKey(fromGroup);
         if(groups!=null&&groups.getEditerLevel().intValue()<=authLevel)
@@ -94,6 +95,16 @@ public class Instructions {
         Lexicon lexicon = new Lexicon();
         lexicon.setQuestion(getMatcher(RegexString.matchRegexs.get(instructType),msg));
         return new LexiconDto(lexicon,table);
+    }
+
+    public static Disable msgToDisable(String instructType,String msg,Long fromGroup){
+        Disable disable = new Disable(Long.parseLong(getMatcher(RegexString.matchRegexs.get(instructType),msg)),fromGroup,null);
+        return disable;
+    }
+
+    public static Disable msgToDisable(String instructType,String msg,Long fromGroup,Long fromQQ){
+        Disable disable = new Disable(Long.parseLong(getMatcher(RegexString.matchRegexs.get(instructType),msg)),fromGroup,fromQQ);
+        return disable;
     }
 
     public static String getType(String instructType){
