@@ -1,5 +1,6 @@
 package top.wsure.service;
 
+import com.sobte.cqp.jcq.message.CQCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.wsure.dao.LexiconMapper;
@@ -55,7 +56,7 @@ public class LexiconService {
                 case 2:
                     res.add(lexicon);break;
                 case 3:
-                    if(record.getQuestion().matches(lexicon.getQuestion())){
+                    if(CQCode.decode(record.getQuestion()).matches(CQCode.decode(lexicon.getQuestion()))){
                         res.add(lexicon);
                     }
                     break;

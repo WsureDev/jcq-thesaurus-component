@@ -138,15 +138,14 @@ public class MsgHandle {
     public static void groupMsgChat(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
                                         int font){
         DisableHandle.delMsgIfBan(new Disable(fromQQ,fromGroup,null),msgId);
-
+        List<Lexicon> lexicons = getLexicons(msg,"global");
         if(isEnable(fromGroup))
         {
-            List<Lexicon> lexicons = getLexicons(msg,tableName(fromGroup));
-            lexicons.addAll(getLexicons(msg,"global"));
-            for (Lexicon l:lexicons)
-            {
-                CQ.sendGroupMsg(fromGroup,l.getAnswer());
-            }
+            lexicons.addAll(getLexicons(msg,tableName(fromGroup)));
+        }
+        for (Lexicon l:lexicons)
+        {
+            CQ.sendGroupMsg(fromGroup,l.getAnswer());
         }
     }
 

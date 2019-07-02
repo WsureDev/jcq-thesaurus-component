@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wsure.dao.DisableMapper" >
+  <resultMap id="BaseResultMap" type="top.wsure.entity.Disable" >
+    <result column="qq" property="qq" jdbcType="BIGINT" />
+    <result column="group_id" property="groupId" jdbcType="BIGINT" />
+    <result column="commit_user" property="commitUser" jdbcType="BIGINT" />
+    <result column="commit_time" property="commitTime" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <insert id="insert" parameterType="top.wsure.entity.Disable" >
+    insert into disable (qq, group_id, commit_user, 
+      commit_time)
+    values (#{qq,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{commitUser,jdbcType=BIGINT}, 
+      #{commitTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="top.wsure.entity.Disable" >
+    insert into disable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="commitUser != null" >
+        commit_user,
+      </if>
+      <if test="commitTime != null" >
+        commit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="qq != null" >
+        #{qq,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="commitUser != null" >
+        #{commitUser,jdbcType=BIGINT},
+      </if>
+      <if test="commitTime != null" >
+        #{commitTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="delete" parameterType="top.wsure.entity.Disable" >
+    delete from disable where #{qq,jdbcType=BIGINT} = qq and #{groupId,jdbcType=BIGINT} = group_id and #{commitTime,jdbcType=VARCHAR} = commit_user
+  </delete>
+
+  <select id="queryDisable" parameterType="top.wsure.entity.Disable" resultType="java.util.List">
+    select * from disable
+    <where>
+      <if test="qq != null" >
+        #{qq,jdbcType=BIGINT} = qq and
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=BIGINT} = group_id and
+      </if>
+      <if test="commitUser != null" >
+        #{commitUser,jdbcType=BIGINT} = commit_user and
+      </if>
+    </where>
+  </select>
+  <select id="selectByQq" parameterType="top.wsure.entity.Disable" resultMap="BaseResultMap">
+    select * from disable where #{qq,jdbcType=BIGINT} = qq and #{groupId,jdbcType=BIGINT} = group_id
+  </select>
+</mapper>
